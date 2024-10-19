@@ -48,20 +48,24 @@ public class PlayerController : Character {
     private void MoveAndRotate() {
         MoveDirection = InputManager.Instance.GetMoveDirectionNormalized();
         MoveDirection = UpdateDirectionRelativeToCamera().normalized;
-        bMoving = MoveDirection != Vector3.zero;
+        bMoving = (MoveDirection != Vector3.zero);
 
         Vector3 NewVelocity;
-        Vector3 ExistingVelocity = RigidBody.linearVelocity;
+        Vector3 ExistingVelocity = CharacterRigidbody.linearVelocity;
         Vector3 MoveVelocity = moveSpeed * Time.fixedDeltaTime * MoveDirection;
 
         if (IsGrounded()) {
             NewVelocity = AdjustVelocityToSlope(MoveVelocity);
+
+            if (bOnPlatform && !bJumping) {
+                NewVelocity += ApplyMovingPlatformVelocity();
+            }
         }
         else {
-            NewVelocity = AdjustAirVelocity(ExistingVelocity, MoveVelocity);         
+            NewVelocity = AdjustAirVelocity(ExistingVelocity, MoveVelocity);     
         }
 
-        RigidBody.linearVelocity = NewVelocity;
+        CharacterRigidbody.linearVelocity = NewVelocity;
 
 
         if (bMoving) { 
@@ -118,11 +122,22 @@ public class PlayerController : Character {
 
     
     // --------------------------------------------------------------------
+    private Vector3 ApplyMovingPlatformVelocity() {
+        Vector3 LinearVelocity = PlatformRigidbody.linearVelocity;
+        Vector3 AngularVelocity = PlatformRigidbody.angularVelocity;
+
+        Vector3 PlatformToPlayer = transform.position - PlatformRigidbody.position;
+        Vector3 RotationalVelocity = Vector3.Cross(AngularVelocity, PlatformToPlayer);
+
+        return LinearVelocity + RotationalVelocity;
+    }
+
+
+    // --------------------------------------------------------------------
     private void Jump() {
         if (IsGrounded() && !bJumping) {
             bJumping = true;
-            AirMoveDirection = MoveDirection;
-            RigidBody.AddForce(jumpForce * transform.up, ForceMode.Impulse);
+            CharacterRigidbody.AddForce(jumpForce * transform.up, ForceMode.Impulse);
         }
     }
 
