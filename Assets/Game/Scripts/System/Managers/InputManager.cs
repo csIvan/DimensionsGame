@@ -10,9 +10,9 @@ public class InputManager : MonoBehaviour {
     private PlayerInputActions InputActions;
 
     // Input Events
-    public event Action OnJumpStarted;
-    public event Action OnJumpEnded;
-    public event Action OnCrouch;
+    public static event Action OnJumpStarted;
+    public static event Action OnJumpEnded;
+    public static event Action OnCrouch;
 
 
     // --------------------------------------------------------------------

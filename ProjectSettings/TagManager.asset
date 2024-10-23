@@ -41,6 +41,15 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Ground
+    uniqueID: 4233554115
+    locked: 0
+  - name: Solids
+    uniqueID: 3725892793
+    locked: 0
+  - name: Player
+    uniqueID: 776680011
+    locked: 0
   m_RenderingLayers:
   - Default
   - Light Layer 1
