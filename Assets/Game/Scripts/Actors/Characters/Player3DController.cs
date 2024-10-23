@@ -2,13 +2,13 @@ using System.Threading;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class PlayerController : Character {
+public class Player3DController : Character {
 
     // References
     private Transform CameraTransform;
 
     // --------------------------------------------------------------------
-    protected new void Awake() {
+    protected override void Awake() {
         base.Awake();
         
     }
@@ -20,22 +20,22 @@ public class PlayerController : Character {
 
     // --------------------------------------------------------------------
     private void OnEnable() {
-        InputManager.Instance.OnJumpStarted += Jump;
-        InputManager.Instance.OnJumpEnded += EndJump;
-        InputManager.Instance.OnCrouch += Crouch;
+        InputManager.OnJumpStarted += Jump;
+        InputManager.OnJumpEnded += EndJump;
+        InputManager.OnCrouch += Crouch;
     }
 
 
     // --------------------------------------------------------------------
     private void OnDisable() {
-        InputManager.Instance.OnJumpStarted -= Jump;
-        InputManager.Instance.OnJumpEnded -= EndJump;
-        InputManager.Instance.OnCrouch -= Crouch;
+        InputManager.OnJumpStarted -= Jump;
+        InputManager.OnJumpEnded -= EndJump;
+        InputManager.OnCrouch -= Crouch;
     }
 
 
     // --------------------------------------------------------------------
-    protected new void FixedUpdate() {
+    protected override void FixedUpdate() {
         base.FixedUpdate();
 
         if (Status == CharacterStatus.Alive) {

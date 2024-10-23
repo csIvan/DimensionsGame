@@ -7,7 +7,6 @@ public enum CharacterStatus {
     Dead
 }
 
-[RequireComponent (typeof(Rigidbody))]
 public class Character : MonoBehaviour {
 
     [Header("Movement")]
@@ -41,14 +40,13 @@ public class Character : MonoBehaviour {
 
 
     // --------------------------------------------------------------------
-    protected void Awake() {
+    protected virtual void Awake() {
         CharacterRigidbody = GetComponent<Rigidbody>();
         Status = CharacterStatus.Alive;
-
         bMoving = false;
     }
 
-    protected void FixedUpdate() {
+    protected virtual void FixedUpdate() {
         AdjustGravityScale();
     }
 
