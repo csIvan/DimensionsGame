@@ -19,7 +19,8 @@ public class Player3DController : Character {
 
 
     // --------------------------------------------------------------------
-    private void OnEnable() {
+    protected override void OnEnable() {
+        base.OnEnable();
         InputManager.OnJumpStarted += Jump;
         InputManager.OnJumpEnded += EndJump;
         InputManager.OnCrouch += Crouch;
@@ -27,7 +28,8 @@ public class Player3DController : Character {
 
 
     // --------------------------------------------------------------------
-    private void OnDisable() {
+    protected override void OnDisable() {
+        base.OnDisable();
         InputManager.OnJumpStarted -= Jump;
         InputManager.OnJumpEnded -= EndJump;
         InputManager.OnCrouch -= Crouch;
