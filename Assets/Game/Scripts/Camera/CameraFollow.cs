@@ -20,13 +20,19 @@ public class CameraFollow : MonoBehaviour {
 
 
     // --------------------------------------------------------------------
+    private void Start() {
+        ResetThirdPersonCamera();
+    }
+
+
+    // --------------------------------------------------------------------
     private void LateUpdate() {
         HandleCameraFollow();
     }
 
 
     // --------------------------------------------------------------------
-    private void HandleCameraFollow() {
+    private void HandleCameraFollow(bool smooth = true) {
         Vector2 MouseInput = InputManager.Instance.GetMouseInput();
         float mouseX = MouseInput.x * Time.deltaTime * cameraSensitivity;
         float mouseY = MouseInput.y * Time.deltaTime * cameraSensitivity;
@@ -39,8 +45,9 @@ public class CameraFollow : MonoBehaviour {
         Vector3 CameraPosition = Target.position + CameraRotation * CameraOffset;
 
         AdjustCameraIfBlocked(Target.position, ref CameraPosition);
-        transform.position = Vector3.Lerp(transform.position, CameraPosition,
-                                            smoothSpeed * Time.deltaTime);
+        float smoothValue = smoothSpeed * Time.deltaTime;
+        transform.position = (smooth) ? Vector3.Lerp(transform.position, CameraPosition, smoothValue)
+                                      : CameraPosition;
 
         transform.LookAt(Target.position + Vector3.up);
     }
@@ -55,6 +62,12 @@ public class CameraFollow : MonoBehaviour {
                             CameraOffset.magnitude, CollisionLayers)) {
             NewPosition = hit.point + hit.normal * minCloseDistance;
         }
+    }
+
+
+    // --------------------------------------------------------------------
+    public void ResetThirdPersonCamera() {
+        HandleCameraFollow(false);
     }
 
 }

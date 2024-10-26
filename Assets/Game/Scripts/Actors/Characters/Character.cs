@@ -46,8 +46,24 @@ public class Character : MonoBehaviour {
         bMoving = false;
     }
 
+
+    // --------------------------------------------------------------------
+    protected virtual void OnEnable() {
+
+    }
+
+
+    // --------------------------------------------------------------------
+    protected virtual void OnDisable() {
+
+    }
+
+
+    // --------------------------------------------------------------------
     protected virtual void FixedUpdate() {
-        AdjustGravityScale();
+        if (Status == CharacterStatus.Alive) {
+            AdjustGravityScale();          
+        }
     }
 
 
@@ -76,11 +92,32 @@ public class Character : MonoBehaviour {
     }
 
 
+    // --------------------------------------------------------------------
+    public virtual void SwitchRigidbodyMode(bool To3DMode) {
+        CharacterRigidbody.rotation = Quaternion.identity; 
+        if (To3DMode) {
+            CharacterRigidbody.useGravity = true;
+            CharacterRigidbody.constraints = RigidbodyConstraints.FreezeRotation;
+        }
+        else {
+            CharacterRigidbody.useGravity = false;
+            CharacterRigidbody.constraints = RigidbodyConstraints.FreezeRotation | 
+                                             RigidbodyConstraints.FreezePositionY;
+        }
+    }
+
+
+    // --------------------------------------------------------------------
+    public virtual void SetCharacterPause(bool pause) {
+        Status = (pause) ? CharacterStatus.Paused : CharacterStatus.Alive;
+        CharacterRigidbody.isKinematic = pause;
+
+    }
 
 
     // --------------------------------------------------------------------
     private void OnTriggerStay(Collider other) {
-        if (other.transform.parent.TryGetComponent(out Platform PlatformAI)) {
+        if (other.transform.parent && other.transform.parent.TryGetComponent(out Platform PlatformAI)) {
             bOnPlatform = true;
             PlatformRigidbody = PlatformAI.PlatformRigidbody;
         }
@@ -89,7 +126,7 @@ public class Character : MonoBehaviour {
 
     // --------------------------------------------------------------------
     private void OnTriggerExit(Collider other) {
-        if (other.transform.parent.TryGetComponent(out Platform PlatformAI)) {
+        if (other.transform.parent && other.transform.parent.TryGetComponent(out Platform PlatformAI)) {
             bOnPlatform = false;
             PlatformRigidbody = null;
         }
