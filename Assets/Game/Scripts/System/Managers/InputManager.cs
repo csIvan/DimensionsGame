@@ -1,4 +1,5 @@
 using System;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -12,7 +13,11 @@ public class InputManager : MonoBehaviour {
     // Input Events
     public static event Action OnJumpStarted;
     public static event Action OnJumpEnded;
-    public static event Action OnCrouch;
+    public static event Action OnInteract;
+    public static event Action<bool> OnPause;
+
+
+    private bool bGamePaused;
 
 
     // --------------------------------------------------------------------
@@ -23,8 +28,8 @@ public class InputManager : MonoBehaviour {
         }
 
         Instance = this;
-        DontDestroyOnLoad(gameObject);
         InputActions = new PlayerInputActions();
+        bGamePaused = false;
     }
 
 
@@ -33,7 +38,8 @@ public class InputManager : MonoBehaviour {
         InputActions.Player.Enable();
         InputActions.Player.Jump.performed += JumpButtonPressed;
         InputActions.Player.Jump.canceled += JumpButtonReleased;
-        InputActions.Player.Crouch.performed += CrouchButtonPressed;
+        InputActions.Player.Interact.performed += InteractButtonPressed;
+        InputActions.Player.Pause.performed += PauseButtonPressed;
     }
 
 
@@ -42,7 +48,8 @@ public class InputManager : MonoBehaviour {
         InputActions.Player.Disable();
         InputActions.Player.Jump.performed -= JumpButtonPressed;
         InputActions.Player.Jump.canceled -= JumpButtonReleased;
-        InputActions.Player.Crouch.performed -= CrouchButtonPressed;
+        InputActions.Player.Interact.performed -= InteractButtonPressed;
+        InputActions.Player.Pause.performed -= PauseButtonPressed;
     }
 
 
@@ -75,7 +82,22 @@ public class InputManager : MonoBehaviour {
 
 
     // --------------------------------------------------------------------
-    private void CrouchButtonPressed(InputAction.CallbackContext context) {
-        OnCrouch?.Invoke();
+    private void InteractButtonPressed(InputAction.CallbackContext context) {
+        OnInteract?.Invoke();
+    }
+
+
+    // --------------------------------------------------------------------
+    private void PauseButtonPressed(InputAction.CallbackContext context) {
+        if (context.performed) {
+            PauseGame();
+        }
+    }
+
+
+    // --------------------------------------------------------------------
+    public void PauseGame() {
+        bGamePaused = !bGamePaused;
+        OnPause?.Invoke(bGamePaused);
     }
 }

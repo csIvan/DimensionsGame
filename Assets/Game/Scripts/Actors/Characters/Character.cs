@@ -1,3 +1,4 @@
+using UnityEditor.MemoryProfiler;
 using UnityEngine;
 
 
@@ -42,20 +43,24 @@ public class Character : MonoBehaviour {
     // --------------------------------------------------------------------
     protected virtual void Awake() {
         CharacterRigidbody = GetComponent<Rigidbody>();
-        Status = CharacterStatus.Alive;
+        Status = CharacterStatus.Paused;
         bMoving = false;
     }
 
 
     // --------------------------------------------------------------------
     protected virtual void OnEnable() {
-
+        EventManager.OnGameStarted += HandleGameStart;
+        EventManager.OnGameEnded += HandleGameOver;
+        InputManager.OnPause += SetCharacterPause;
     }
 
 
     // --------------------------------------------------------------------
     protected virtual void OnDisable() {
-
+        EventManager.OnGameStarted -= HandleGameStart;
+        EventManager.OnGameEnded -= HandleGameOver;
+        InputManager.OnPause -= SetCharacterPause;
     }
 
 
@@ -64,6 +69,17 @@ public class Character : MonoBehaviour {
         if (Status == CharacterStatus.Alive) {
             AdjustGravityScale();          
         }
+    }
+
+
+    // --------------------------------------------------------------------
+    protected virtual void HandleGameStart() {
+        Status = CharacterStatus.Alive;
+    }
+
+    // --------------------------------------------------------------------
+    protected virtual void HandleGameOver() {
+        SetCharacterPause(true);
     }
 
 
@@ -108,9 +124,9 @@ public class Character : MonoBehaviour {
 
 
     // --------------------------------------------------------------------
-    public virtual void SetCharacterPause(bool pause) {
-        Status = (pause) ? CharacterStatus.Paused : CharacterStatus.Alive;
-        CharacterRigidbody.isKinematic = pause;
+    public virtual void SetCharacterPause(bool bPause) {
+        Status = (bPause) ? CharacterStatus.Paused : CharacterStatus.Alive;
+        CharacterRigidbody.isKinematic = bPause;
 
     }
 

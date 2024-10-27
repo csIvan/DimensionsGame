@@ -23,7 +23,6 @@ public class Player3DController : Character {
         base.OnEnable();
         InputManager.OnJumpStarted += Jump;
         InputManager.OnJumpEnded += EndJump;
-        InputManager.OnCrouch += Crouch;
     }
 
 
@@ -32,7 +31,6 @@ public class Player3DController : Character {
         base.OnDisable();
         InputManager.OnJumpStarted -= Jump;
         InputManager.OnJumpEnded -= EndJump;
-        InputManager.OnCrouch -= Crouch;
     }
 
 
@@ -137,6 +135,8 @@ public class Player3DController : Character {
 
     // --------------------------------------------------------------------
     private void Jump() {
+        if (Status != CharacterStatus.Alive) return;
+
         if (IsGrounded() && !bJumping) {
             bJumping = true;
             CharacterRigidbody.AddForce(jumpForce * transform.up, ForceMode.Impulse);
@@ -148,11 +148,4 @@ public class Player3DController : Character {
     private void EndJump() {
         bJumping = false;
     }
-
-
-    // --------------------------------------------------------------------
-    private void Crouch() {
-        Debug.Log("Crouching");
-    }
-
 }

@@ -21,6 +21,8 @@ public class Timer : MonoBehaviour {
     [SerializeField] private TimerFormat Format;
     [SerializeField] private TextMeshProUGUI TimerText;
     [SerializeField] private float timerDuration;
+    [SerializeField] private string countdownEndText;
+    [SerializeField] private bool hasEndText;
 
     Dictionary<TimerFormat, string> TimeFormats = new Dictionary<TimerFormat, string>();
     private float currentTime;
@@ -50,7 +52,13 @@ public class Timer : MonoBehaviour {
     private void UpdateTime() {
         currentTime += (TimerStyle == TimerType.Countdown) ? -Time.deltaTime : Time.deltaTime;
         TimeSpan time = TimeSpan.FromSeconds(currentTime);
-        TimerText.text = time.ToString(TimeFormats[Format]);
+
+        if( hasEndText && currentTime < 1.0f && TimerStyle == TimerType.Countdown) {
+            TimerText.text = countdownEndText;
+        }
+        else {
+            TimerText.text = time.ToString(TimeFormats[Format]);
+        }
     }
 
 
@@ -70,5 +78,11 @@ public class Timer : MonoBehaviour {
     public float GetTimeInSeconds() {
         return currentTime;
     }
+
+    // --------------------------------------------------------------------
+    public string GetTimeText() {
+        return TimerText.text;
+    }
+
 
 }
