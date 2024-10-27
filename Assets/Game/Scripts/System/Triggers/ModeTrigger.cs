@@ -9,8 +9,9 @@ public class ModeTrigger : MonoBehaviour {
 
     // --------------------------------------------------------------------
     private void OnTriggerEnter(Collider other) {
-        bool hasParent = other.transform.parent != null;
-        if(hasParent && other.transform.parent.TryGetComponent(out Character PlayerCharacter)) {
+        if (other.transform.parent == null) return;
+
+        if (other.transform.parent.TryGetComponent(out Character PlayerCharacter)) {
             OnModeSwitchTriggered?.Invoke(Destination);
         }
     }

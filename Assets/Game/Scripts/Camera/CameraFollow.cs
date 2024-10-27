@@ -18,6 +18,8 @@ public class CameraFollow : MonoBehaviour {
     private float VerticalAngle = 0.0f;
     private float HorizontalAngle = 0.0f;
 
+    private bool bGameEnded = false;
+
 
     // --------------------------------------------------------------------
     private void Start() {
@@ -27,7 +29,21 @@ public class CameraFollow : MonoBehaviour {
 
     // --------------------------------------------------------------------
     private void LateUpdate() {
+        if (bGameEnded) return;
+
         HandleCameraFollow();
+    }
+
+
+    // --------------------------------------------------------------------
+    private void OnEnable() {
+        EventManager.OnGameEnded += HandleGameOver;
+    }
+
+
+    // --------------------------------------------------------------------
+    private void OnDisable() {
+        EventManager.OnGameEnded -= HandleGameOver;
     }
 
 
@@ -68,6 +84,12 @@ public class CameraFollow : MonoBehaviour {
     // --------------------------------------------------------------------
     public void ResetThirdPersonCamera() {
         HandleCameraFollow(false);
+    }
+
+
+    // --------------------------------------------------------------------
+    private void HandleGameOver() {
+        bGameEnded = true;
     }
 
 }

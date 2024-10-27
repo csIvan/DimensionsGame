@@ -7,10 +7,13 @@ public class UIManager : MonoBehaviour {
     [Header("Game UI References")]
     [SerializeField] private GameObject PauseUI;
     [SerializeField] private GameObject WinUI;
+    [SerializeField] private GameObject GameOverUI;
+    [SerializeField] private TextMeshProUGUI FinalTime;
     [SerializeField] private Timer TimerUI;
     [SerializeField] private Timer CountdownUI;
 
-    private bool timerStarted;
+    private bool bTimerStarted;
+    private bool bGameEnded;
 
 
     // --------------------------------------------------------------------
@@ -21,17 +24,61 @@ public class UIManager : MonoBehaviour {
         WinUI.SetActive(false);
         CountdownUI.gameObject.SetActive(true);
         CountdownUI.StartTimer();
-        timerStarted = false;
+        bTimerStarted = false;
+        bGameEnded = false;
+    }
+
+
+    // --------------------------------------------------------------------
+    private void OnEnable() {
+        WinTrigger.OnWinTriggered += DisplayWinUI;
+        InputManager.OnInteract += DisplayGameOverUI;
+        InputManager.OnPause += DisplayPauseUI;
+    }
+
+
+    // --------------------------------------------------------------------
+    private void OnDisable() {
+        WinTrigger.OnWinTriggered -= DisplayWinUI;
+        InputManager.OnInteract -= DisplayGameOverUI;
+        InputManager.OnPause -= DisplayPauseUI;
     }
 
 
     // --------------------------------------------------------------------
     private void Update() {
-        if(!timerStarted && CountdownUI.GetTimeInSeconds() <= 0.0f) {
+        if(!bTimerStarted && CountdownUI.GetTimeInSeconds() <= 0.0f) {
             CountdownUI.gameObject.SetActive(false);
+            EventManager.StartGame();
             TimerUI.StartTimer();
-            timerStarted = true;
+            bTimerStarted = true;
         }
+    }
+
+
+    // --------------------------------------------------------------------
+    private void DisplayWinUI() {
+        TimerUI.StopTimer();
+        FinalTime.text = TimerUI.GetTimeText();
+        WinUI.SetActive(true);
+        bGameEnded = true;
+    }
+
+
+    // --------------------------------------------------------------------
+    private void DisplayGameOverUI() {
+        if (!bGameEnded) return;
+
+        EventManager.GameOver();
+        GameOverUI.SetActive(true);
+    }
+
+
+    // --------------------------------------------------------------------
+    private void DisplayPauseUI(bool bPause) {
+        if (bGameEnded) return;
+
+        PauseUI.SetActive(bPause);
     }
 
 }
