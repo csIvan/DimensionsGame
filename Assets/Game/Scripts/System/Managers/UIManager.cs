@@ -18,14 +18,19 @@ public class UIManager : MonoBehaviour {
 
     // --------------------------------------------------------------------
     private IEnumerator Start() {
-        yield return new WaitForSeconds(1.0f);
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
 
         PauseUI.SetActive(false);
         WinUI.SetActive(false);
-        CountdownUI.gameObject.SetActive(true);
-        CountdownUI.StartTimer();
+
         bTimerStarted = false;
         bGameEnded = false;
+
+        yield return new WaitForSeconds(1.0f);
+
+        CountdownUI.gameObject.SetActive(true);
+        CountdownUI.StartTimer();
     }
 
 
@@ -70,6 +75,9 @@ public class UIManager : MonoBehaviour {
         if (!bGameEnded) return;
 
         EventManager.GameOver();
+
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
         GameOverUI.SetActive(true);
     }
 
@@ -78,6 +86,8 @@ public class UIManager : MonoBehaviour {
     private void DisplayPauseUI(bool bPause) {
         if (bGameEnded) return;
 
+        Cursor.lockState = (bPause) ? CursorLockMode.None : CursorLockMode.Locked;
+        Cursor.visible = bPause;
         PauseUI.SetActive(bPause);
     }
 

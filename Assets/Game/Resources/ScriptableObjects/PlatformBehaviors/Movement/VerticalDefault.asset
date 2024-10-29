@@ -15,4 +15,4 @@ MonoBehaviour:
   StartOffset: {x: 0, y: 0, z: 0}
   EndOffset: {x: 0, y: 5, z: 0}
   speed: 0.25
-  stopDuration: 0.1
+  stopDuration: 1

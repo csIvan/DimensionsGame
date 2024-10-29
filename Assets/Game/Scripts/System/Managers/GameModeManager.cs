@@ -17,6 +17,7 @@ public class GameModeManager : MonoBehaviour {
     [SerializeField] private Player2DController Controller2D;
     [SerializeField] private GameObject Visuals3D;
     [SerializeField] private GameObject Visuals2D;
+    [SerializeField] private GameObject PixelGrid;
 
 
     private Character ActiveController;
@@ -41,6 +42,7 @@ public class GameModeManager : MonoBehaviour {
         Camera2D.gameObject.SetActive(false);
         TransitionCamera.gameObject.SetActive(false);
         ActiveController = Controller3D;
+        PixelGrid.SetActive(false);
     }
 
 
@@ -124,6 +126,8 @@ public class GameModeManager : MonoBehaviour {
 
     // --------------------------------------------------------------------
     private void StartTransition() {
+        PixelGrid.SetActive((Is3DMode) ? true : false);
+
         ActiveCamera.gameObject.SetActive(false);
         TransitionCamera.gameObject.SetActive(true);
     }
