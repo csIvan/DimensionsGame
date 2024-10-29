@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEditor.MemoryProfiler;
 using UnityEngine;
 
@@ -26,15 +27,17 @@ public class Character : MonoBehaviour {
     [SerializeField] protected Vector3 GroundCheckBoxExtents;
     [SerializeField] protected LayerMask GroundLayer;
 
-
-    // References
+    [Header("References")]
+    [SerializeField] protected Animator CharacterAnimator;
+    [SerializeField] protected GameObject Visuals;
     protected Rigidbody CharacterRigidbody;
     protected Rigidbody PlatformRigidbody;
     protected CharacterStatus Status;
-
+    protected Vector3 LastCheckpoint;
 
     // Locomotion States
     public bool bMoving { get; protected set; }
+    public bool bGrounded { get; protected set; }
     public bool bJumping { get; protected set; }
     public bool bOnPlatform { get; protected set; }
 
@@ -45,6 +48,7 @@ public class Character : MonoBehaviour {
         CharacterRigidbody = GetComponent<Rigidbody>();
         Status = CharacterStatus.Paused;
         bMoving = false;
+        LastCheckpoint = transform.position;
     }
 
 
@@ -53,6 +57,8 @@ public class Character : MonoBehaviour {
         EventManager.OnGameStarted += HandleGameStart;
         EventManager.OnGameEnded += HandleGameOver;
         InputManager.OnPause += SetCharacterPause;
+        FallDetectionTrigger.OnFallDetected += HandleOutOfBounds;
+        CheckpointTrigger.OnCheckpointTriggered += SetCheckpoint;
     }
 
 
@@ -61,13 +67,16 @@ public class Character : MonoBehaviour {
         EventManager.OnGameStarted -= HandleGameStart;
         EventManager.OnGameEnded -= HandleGameOver;
         InputManager.OnPause -= SetCharacterPause;
+        FallDetectionTrigger.OnFallDetected -= HandleOutOfBounds;
+        CheckpointTrigger.OnCheckpointTriggered -= SetCheckpoint;
     }
 
 
     // --------------------------------------------------------------------
     protected virtual void FixedUpdate() {
         if (Status == CharacterStatus.Alive) {
-            AdjustGravityScale();          
+            AdjustGravityScale();
+            CheckGrounded();
         }
     }
 
@@ -85,7 +94,7 @@ public class Character : MonoBehaviour {
 
     // --------------------------------------------------------------------
     private void AdjustGravityScale() {
-        bool bFalling = CharacterRigidbody.linearVelocity.y < 0.0f && !IsGrounded();
+        bool bFalling = CharacterRigidbody.linearVelocity.y < 0.0f && !bGrounded;
         bool bEarlyJumpRelease = !bFalling && !bJumping;
 
         if (bFalling) {
@@ -100,11 +109,12 @@ public class Character : MonoBehaviour {
 
 
     // --------------------------------------------------------------------
-    protected bool IsGrounded() {
+    protected void CheckGrounded() {
         Collider[] HitColliders = Physics.OverlapBox(transform.position, 
                         GroundCheckBoxExtents, Quaternion.identity, GroundLayer);
 
-        return HitColliders.Length > 0;
+        bGrounded = HitColliders.Length > 0;
+        CharacterAnimator.SetBool("bGrounded", bGrounded);
     }
 
 
@@ -128,6 +138,37 @@ public class Character : MonoBehaviour {
         Status = (bPause) ? CharacterStatus.Paused : CharacterStatus.Alive;
         CharacterRigidbody.isKinematic = bPause;
 
+    }
+
+
+    // --------------------------------------------------------------------
+    protected virtual void HandleOutOfBounds() {
+        StartCoroutine(OutOfBoundsTransition());
+    }
+
+
+
+    // --------------------------------------------------------------------
+    protected IEnumerator OutOfBoundsTransition() {
+        // Reset to last Checkpoint
+        SetCharacterPause(true);
+        Visuals.SetActive(false);
+
+        yield return new WaitForSeconds(1.0f);
+
+        transform.position = LastCheckpoint;
+        transform.rotation = Quaternion.identity;
+
+        yield return new WaitForSeconds(0.5f);
+
+        SetCharacterPause(false);
+        Visuals.SetActive(true);
+    }
+
+
+    // --------------------------------------------------------------------
+    protected virtual void SetCheckpoint(Vector3 CheckpointPosition) {
+        LastCheckpoint = CheckpointPosition;
     }
 
 

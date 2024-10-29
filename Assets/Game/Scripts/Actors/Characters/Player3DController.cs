@@ -49,12 +49,13 @@ public class Player3DController : Character {
         MoveDirection = InputManager.Instance.GetMoveDirectionNormalized();
         MoveDirection = UpdateDirectionRelativeToCamera().normalized;
         bMoving = (MoveDirection != Vector3.zero);
+        CharacterAnimator.SetBool("bMoving", bMoving);
 
         Vector3 NewVelocity;
         Vector3 ExistingVelocity = CharacterRigidbody.linearVelocity;
         Vector3 MoveVelocity = moveSpeed * Time.fixedDeltaTime * MoveDirection;
 
-        if (IsGrounded()) {
+        if (bGrounded) {
             NewVelocity = AdjustVelocityToSlope(MoveVelocity);
 
             if (bOnPlatform && !bJumping) {
@@ -137,7 +138,8 @@ public class Player3DController : Character {
     private void Jump() {
         if (Status != CharacterStatus.Alive) return;
 
-        if (IsGrounded() && !bJumping) {
+        if (bGrounded && !bJumping) {
+            CharacterAnimator.SetTrigger("Jump");
             bJumping = true;
             CharacterRigidbody.AddForce(jumpForce * transform.up, ForceMode.Impulse);
         }

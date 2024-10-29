@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class Player2DController : Character {
 
-    [Header("References")]
     [SerializeField] private LayerMask SolidObjectLayer;
+    [SerializeField] private LayerMask PlatformEdgeLayer;
 
 
     // --------------------------------------------------------------------
@@ -32,11 +32,13 @@ public class Player2DController : Character {
     private void Handle2DMovement() {
         if (!bMoving) {
             MoveDirection = InputManager.Instance.GetMoveDirectionNormalized();
-            if (MoveDirection != Vector3.zero) {
+            if (MoveDirection.x != 0) {
+                MoveDirection.z = 0;
+            }
 
-                if(MoveDirection.x != 0) {
-                    MoveDirection.z = 0;
-                }
+            if (MoveDirection != Vector3.zero) {
+                CharacterAnimator.SetFloat("moveX", MoveDirection.x);
+                CharacterAnimator.SetFloat("moveZ", MoveDirection.z);
 
                 Vector3 TargetPosition = transform.position;
                 TargetPosition.x += Mathf.Ceil(MoveDirection.x);
@@ -48,6 +50,7 @@ public class Player2DController : Character {
                 }
             }
         }
+        CharacterAnimator.SetBool("bMoving", bMoving);
     }
 
 
@@ -60,7 +63,11 @@ public class Player2DController : Character {
             yield return null;
         }
         transform.position = TargetPosition;
+
         bMoving = false;
+        if (IsEdge(TargetPosition)) {
+            HandleOutOfBounds();
+        }
     }
 
 
@@ -72,5 +79,11 @@ public class Player2DController : Character {
             return false;
         }
         return true;
+    }    
+    
+    // --------------------------------------------------------------------
+    private bool IsEdge(Vector3 TargetPosition) {
+        Collider[] Colliders = Physics.OverlapSphere(TargetPosition, 0.3f, PlatformEdgeLayer);
+        return (Colliders.Length >= 1);
     }
 }
