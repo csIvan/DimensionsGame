@@ -56,7 +56,7 @@ public class Character : MonoBehaviour {
     protected virtual void OnEnable() {
         EventManager.OnGameStarted += HandleGameStart;
         EventManager.OnGameEnded += HandleGameOver;
-        InputManager.OnPause += SetCharacterPause;
+        InputManager.OnPause += HandleGamePause;
         FallDetectionTrigger.OnFallDetected += HandleOutOfBounds;
         CheckpointTrigger.OnCheckpointTriggered += SetCheckpoint;
     }
@@ -66,7 +66,7 @@ public class Character : MonoBehaviour {
     protected virtual void OnDisable() {
         EventManager.OnGameStarted -= HandleGameStart;
         EventManager.OnGameEnded -= HandleGameOver;
-        InputManager.OnPause -= SetCharacterPause;
+        InputManager.OnPause -= HandleGamePause;
         FallDetectionTrigger.OnFallDetected -= HandleOutOfBounds;
         CheckpointTrigger.OnCheckpointTriggered -= SetCheckpoint;
     }
@@ -88,7 +88,7 @@ public class Character : MonoBehaviour {
 
     // --------------------------------------------------------------------
     protected virtual void HandleGameOver() {
-        SetCharacterPause(true);
+        SetCharacterActive(false);
     }
 
 
@@ -134,10 +134,17 @@ public class Character : MonoBehaviour {
 
 
     // --------------------------------------------------------------------
-    public virtual void SetCharacterPause(bool bPause) {
-        Status = (bPause) ? CharacterStatus.Paused : CharacterStatus.Alive;
-        CharacterRigidbody.isKinematic = bPause;
+    public virtual void SetCharacterActive(bool bActive) {
+        Status = (bActive) ? CharacterStatus.Alive : CharacterStatus.Paused;
+        CharacterRigidbody.isKinematic = !bActive;
+        AudioManager.Instance.Stop("SFX_Flying");
 
+    }    
+    
+    
+    // --------------------------------------------------------------------
+    protected virtual void HandleGamePause(bool bPause) {
+        Status = (bPause) ? CharacterStatus.Paused : CharacterStatus.Alive;
     }
 
 
@@ -151,7 +158,7 @@ public class Character : MonoBehaviour {
     // --------------------------------------------------------------------
     protected IEnumerator OutOfBoundsTransition() {
         // Reset to last Checkpoint
-        SetCharacterPause(true);
+        SetCharacterActive(false);
         Visuals.SetActive(false);
 
         yield return new WaitForSeconds(1.0f);
@@ -161,7 +168,7 @@ public class Character : MonoBehaviour {
 
         yield return new WaitForSeconds(0.5f);
 
-        SetCharacterPause(false);
+        SetCharacterActive(true);
         Visuals.SetActive(true);
     }
 

@@ -2597,6 +2597,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Checkpoint (5)
       objectReference: {fileID: 0}
+    - target: {fileID: 3200305315815293502, guid: 50aa9047a9954b64cb3e63ce4ba398d8, type: 3}
+      propertyPath: playSFX
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3200305315815293502, guid: 50aa9047a9954b64cb3e63ce4ba398d8, type: 3}
+      propertyPath: bPlaySFX
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 6574183282327187371, guid: 50aa9047a9954b64cb3e63ce4ba398d8, type: 3}
@@ -4123,7 +4131,6 @@ GameObject:
   m_Component:
   - component: {fileID: 330585546}
   - component: {fileID: 330585545}
-  - component: {fileID: 330585544}
   - component: {fileID: 330585547}
   - component: {fileID: 330585548}
   m_Layer: 0
@@ -4133,14 +4140,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!81 &330585544
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 330585543}
-  m_Enabled: 1
 --- !u!20 &330585545
 Camera:
   m_ObjectHideFlags: 0
@@ -15812,6 +15811,164 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3067411281337865848, guid: e507fe48914d0f9448dd898594464872, type: 3}
   m_PrefabInstance: {fileID: 596204041}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &604855317
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 604855319}
+  - component: {fileID: 604855318}
+  - component: {fileID: 604855320}
+  m_Layer: 0
+  m_Name: AudioManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &604855318
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 604855317}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f2767bcf38e7d642849fd92f7dd2897, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Sounds:
+  - name: Music_GameThemeIntro
+    clip: {fileID: 8300000, guid: d2040b0f58426aa40aac0ddec7e6b03e, type: 3}
+    volume: 0.35
+    pitch: 1
+    loop: 0
+    isMusic: 1
+    source: {fileID: 0}
+    originalVolume: 0
+  - name: Music_GameThemeLoop
+    clip: {fileID: 8300000, guid: 2e53506a55fbee04db62e8474f2ba396, type: 3}
+    volume: 0.3
+    pitch: 1
+    loop: 1
+    isMusic: 1
+    source: {fileID: 0}
+    originalVolume: 0
+  - name: SFX_GameIntroAmbiance
+    clip: {fileID: 8300000, guid: 2ad4f56b2bc75124b81cbf4a0282ccf3, type: 3}
+    volume: 0.05
+    pitch: 1.25
+    loop: 0
+    isMusic: 0
+    source: {fileID: 0}
+    originalVolume: 0
+  - name: SFX_Countdown
+    clip: {fileID: 8300000, guid: ca5019f8e714de84d8f0fa6eaea973c6, type: 3}
+    volume: 0.25
+    pitch: 1
+    loop: 0
+    isMusic: 0
+    source: {fileID: 0}
+    originalVolume: 0
+  - name: SFX_UISelect
+    clip: {fileID: 8300000, guid: 85aafe177b470484198c35214a4bec58, type: 3}
+    volume: 0.85
+    pitch: 1
+    loop: 0
+    isMusic: 0
+    source: {fileID: 0}
+    originalVolume: 0
+  - name: SFX_Flying
+    clip: {fileID: 8300000, guid: 665058ec0d077164b8a3773f41d909a9, type: 3}
+    volume: 0.75
+    pitch: 1.3
+    loop: 1
+    isMusic: 0
+    source: {fileID: 0}
+    originalVolume: 0
+  - name: SFX_Jump
+    clip: {fileID: 8300000, guid: b29ff035aed52d743ae9b76afee7aa7e, type: 3}
+    volume: 0.55
+    pitch: 1.75
+    loop: 0
+    isMusic: 0
+    source: {fileID: 0}
+    originalVolume: 0
+  - name: SFX_Checkpoint
+    clip: {fileID: 8300000, guid: 254503b6728bac14a8ec195cdb60dd0e, type: 3}
+    volume: 0.7
+    pitch: 1.25
+    loop: 0
+    isMusic: 0
+    source: {fileID: 0}
+    originalVolume: 0
+  - name: SFX_MagicPoof
+    clip: {fileID: 8300000, guid: 7080f66264ef9564cbacfd05cd4b65eb, type: 3}
+    volume: 0.85
+    pitch: 1
+    loop: 0
+    isMusic: 0
+    source: {fileID: 0}
+    originalVolume: 0
+  - name: SFX_Death
+    clip: {fileID: 8300000, guid: 247e6991e5af0ad438d807cc7c2ac627, type: 3}
+    volume: 1
+    pitch: 1.25
+    loop: 0
+    isMusic: 0
+    source: {fileID: 0}
+    originalVolume: 0
+  - name: SFX_Fireworks
+    clip: {fileID: 8300000, guid: 46566b693b0c83e46bedbcf787b2388b, type: 3}
+    volume: 0.85
+    pitch: 1
+    loop: 0
+    isMusic: 0
+    source: {fileID: 0}
+    originalVolume: 0
+  - name: SFX_8bitDeath
+    clip: {fileID: 8300000, guid: 9726a667ea327004f9090b6c5c274608, type: 3}
+    volume: 0.75
+    pitch: 1
+    loop: 0
+    isMusic: 0
+    source: {fileID: 0}
+    originalVolume: 0
+  - name: SFX_8bitCannon
+    clip: {fileID: 8300000, guid: 04fbf8584b36b3b43873cb6a147fcc9d, type: 3}
+    volume: 0.85
+    pitch: 1
+    loop: 0
+    isMusic: 0
+    source: {fileID: 0}
+    originalVolume: 0
+--- !u!4 &604855319
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 604855317}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!81 &604855320
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 604855317}
+  m_Enabled: 1
 --- !u!1001 &605256026
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -23470,7 +23627,7 @@ Transform:
   m_GameObject: {fileID: 1284188609}
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -23551,7 +23708,7 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: -0.2, z: 0}
 --- !u!95 &1284188613
 Animator:
   serializedVersion: 7
@@ -27495,7 +27652,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c95f149680b990f438ff1cc6265f715e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TimerStyle: 1
+  Type: 1
   Format: 2
   TimerText: {fileID: 1963436712}
   timerDuration: 0
@@ -31007,7 +31164,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1899189405
 RectTransform:
   m_ObjectHideFlags: 0
@@ -31040,7 +31197,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c95f149680b990f438ff1cc6265f715e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TimerStyle: 0
+  Type: 0
   Format: 0
   TimerText: {fileID: 351499416}
   timerDuration: 3
@@ -34093,6 +34250,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Checkpoint
       objectReference: {fileID: 0}
+    - target: {fileID: 3200305315815293502, guid: 50aa9047a9954b64cb3e63ce4ba398d8, type: 3}
+      propertyPath: playSFX
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3200305315815293502, guid: 50aa9047a9954b64cb3e63ce4ba398d8, type: 3}
+      propertyPath: bPlaySFX
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -34166,6 +34331,7 @@ GameObject:
   - component: {fileID: 543450652076159591}
   - component: {fileID: 1598366177}
   - component: {fileID: 919132147598780638}
+  - component: {fileID: 919132147598780639}
   m_Layer: 0
   m_Name: 3DVisuals
   m_TagString: Untagged
@@ -34196,6 +34362,18 @@ CapsuleCollider:
   m_Height: 0.85
   m_Direction: 1
   m_Center: {x: 0, y: 0.425, z: 0}
+--- !u!114 &919132147598780639
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 919132147598780637}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5aa9b19886b01a4d9328831d7c82dc9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &945614499175064390
 GameObject:
   m_ObjectHideFlags: 0
@@ -34484,7 +34662,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8306955456819673528}
-  m_LocalEulerAnglesHint: {x: -4.809214e-22, y: 0.000003927021, z: -180}
+  m_LocalEulerAnglesHint: {x: -7.680019e-22, y: 0.000006271213, z: -180}
 --- !u!114 &5475537481896600452
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -34524,7 +34702,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8306955456819673528}
-  m_LocalEulerAnglesHint: {x: -51.632317, y: 0.04914089, z: 0.04001681}
+  m_LocalEulerAnglesHint: {x: -66.76137, y: 3.347984, z: 3.6236835}
 --- !u!4 &5648877924908597095
 Transform:
   m_ObjectHideFlags: 0
@@ -34539,7 +34717,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8306955456819673528}
-  m_LocalEulerAnglesHint: {x: -2.1422073e-21, y: 0.00002078835, z: -180}
+  m_LocalEulerAnglesHint: {x: -3.420974e-21, y: 0.000024089157, z: -180}
 --- !u!1 &6707005745652908400
 GameObject:
   m_ObjectHideFlags: 0
@@ -34636,7 +34814,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8306955456819673528}
-  m_LocalEulerAnglesHint: {x: -83.5988, y: 0.000013660389, z: -7.303046e-12}
+  m_LocalEulerAnglesHint: {x: -88.0755, y: -89.999954, z: -89.99997}
 --- !u!4 &7310260777468756811
 Transform:
   m_ObjectHideFlags: 0
@@ -34651,7 +34829,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8306955456819673528}
-  m_LocalEulerAnglesHint: {x: -50.759262, y: 0.000013660381, z: -6.4357216e-13}
+  m_LocalEulerAnglesHint: {x: -60.260952, y: 0.000013660379, z: 0}
 --- !u!4 &7416538683787689118
 Transform:
   m_ObjectHideFlags: 0
@@ -34666,7 +34844,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8306955456819673528}
-  m_LocalEulerAnglesHint: {x: -66.71041, y: -0.046303112, z: 0.11939805}
+  m_LocalEulerAnglesHint: {x: -73.61836, y: -0.8823208, z: 6.676739}
 --- !u!4 &7432501362990669730
 Transform:
   m_ObjectHideFlags: 0
@@ -34802,7 +34980,7 @@ Transform:
   - {fileID: 1769190684711282717}
   - {fileID: 1216940392482859633}
   m_Father: {fileID: 8525754803308170708}
-  m_LocalEulerAnglesHint: {x: 89.98021, y: -0.000014005638, z: 0}
+  m_LocalEulerAnglesHint: {x: 89.9802, y: -0.000013257583, z: 0}
 --- !u!4 &8525754803308170708
 Transform:
   m_ObjectHideFlags: 0
@@ -34824,6 +35002,7 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 200095918}
+  - {fileID: 604855319}
   - {fileID: 1310711246}
   - {fileID: 225853351}
   - {fileID: 2627916853178064320}

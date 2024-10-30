@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections;
 using TMPro;
 using UnityEngine;
 
@@ -17,7 +18,7 @@ public enum TimerFormat {
 public class Timer : MonoBehaviour {
 
     [Header("Timer Settings")]
-    [SerializeField] private TimerType TimerStyle;
+    [SerializeField] private TimerType Type;
     [SerializeField] private TimerFormat Format;
     [SerializeField] private TextMeshProUGUI TimerText;
     [SerializeField] private float timerDuration;
@@ -30,11 +31,11 @@ public class Timer : MonoBehaviour {
 
 
     // --------------------------------------------------------------------
-    private void Start() {
+    private void Awake() {
         TimeFormats.Add(TimerFormat.Whole, @"%s");
         TimeFormats.Add(TimerFormat.TenthDecimal, @"ss\.ff");
         TimeFormats.Add(TimerFormat.Clock, @"mm\:ss");
-        currentTime = (TimerStyle == TimerType.Countdown) ? timerDuration : 0;
+        currentTime = (Type == TimerType.Countdown) ? timerDuration : 0;
         bRunning = false;
     }
 
@@ -42,7 +43,7 @@ public class Timer : MonoBehaviour {
     // --------------------------------------------------------------------
     private void Update() {
         if (!bRunning) return;
-        if (TimerStyle == TimerType.Countdown && currentTime < 0.0f) return;
+        if (Type == TimerType.Countdown && currentTime < 0.0f) return;
 
         UpdateTime();
     }
@@ -50,10 +51,10 @@ public class Timer : MonoBehaviour {
 
     // --------------------------------------------------------------------
     private void UpdateTime() {
-        currentTime += (TimerStyle == TimerType.Countdown) ? -Time.deltaTime : Time.deltaTime;
-        TimeSpan time = TimeSpan.FromSeconds(currentTime);
+        currentTime += (Type == TimerType.Countdown) ? -Time.deltaTime : Time.deltaTime;
+        TimeSpan time = TimeSpan.FromSeconds(Mathf.Ceil(currentTime));
 
-        if( hasEndText && currentTime < 1.0f && TimerStyle == TimerType.Countdown) {
+        if(hasEndText && currentTime < 0.0f && Type == TimerType.Countdown) {
             TimerText.text = countdownEndText;
         }
         else {
@@ -73,6 +74,20 @@ public class Timer : MonoBehaviour {
         bRunning = false;
     }
 
+
+    // --------------------------------------------------------------------
+    public void EndCountdown() {
+        if(Type == TimerType.Countdown) {
+            StartCoroutine(PersistFinalText(1.0f));
+        }
+    }
+
+
+    // --------------------------------------------------------------------
+    private IEnumerator PersistFinalText(float secondsToDisplay) {
+        yield return new WaitForSeconds(secondsToDisplay);
+        gameObject.SetActive(false);
+    }
 
     // --------------------------------------------------------------------
     public float GetTimeInSeconds() {

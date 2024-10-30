@@ -107,7 +107,7 @@ public class GameModeManager : MonoBehaviour {
 
     // --------------------------------------------------------------------
     private void DisableActiveController() {
-        ActiveController.SetCharacterPause(true);
+        ActiveController.SetCharacterActive(false);
         ActiveController.SwitchRigidbodyMode(!Is3DMode);
         ActiveController.enabled = false;
         ActiveVisuals.SetActive(false);
@@ -159,7 +159,7 @@ public class GameModeManager : MonoBehaviour {
         TargetVisuals.SetActive(true);
         
         ActiveController = (Is3DMode) ? Controller3D : Controller2D;
-        ActiveController.SetCharacterPause(false);
+        ActiveController.SetCharacterActive(true);
 
         TransitionCamera.transform.position = TargetCamera.transform.position;
         TransitionCamera.transform.rotation = TargetCamera.transform.rotation;

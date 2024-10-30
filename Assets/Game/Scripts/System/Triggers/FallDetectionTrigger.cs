@@ -10,6 +10,7 @@ public class FallDetectionTrigger : MonoBehaviour {
         if (other.transform.parent == null) return;
 
         if (other.transform.parent.TryGetComponent(out Character Winner)) {
+            AudioManager.Instance.Play("SFX_Death");
             OnFallDetected?.Invoke();
         }
     }

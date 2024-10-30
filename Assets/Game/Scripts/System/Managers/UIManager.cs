@@ -12,25 +12,28 @@ public class UIManager : MonoBehaviour {
     [SerializeField] private Timer TimerUI;
     [SerializeField] private Timer CountdownUI;
 
-    private bool bTimerStarted;
+    private bool bCountdownActive;
     private bool bGameEnded;
 
 
     // --------------------------------------------------------------------
     private IEnumerator Start() {
+        AudioManager.Instance.Play("SFX_GameIntroAmbiance");
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
         PauseUI.SetActive(false);
         WinUI.SetActive(false);
 
-        bTimerStarted = false;
+        bCountdownActive = false;
         bGameEnded = false;
 
         yield return new WaitForSeconds(1.0f);
 
+        AudioManager.Instance.Play("SFX_Countdown");
         CountdownUI.gameObject.SetActive(true);
         CountdownUI.StartTimer();
+        bCountdownActive = true;
     }
 
 
@@ -52,11 +55,12 @@ public class UIManager : MonoBehaviour {
 
     // --------------------------------------------------------------------
     private void Update() {
-        if(!bTimerStarted && CountdownUI.GetTimeInSeconds() <= 0.0f) {
-            CountdownUI.gameObject.SetActive(false);
+        if(bCountdownActive && CountdownUI.GetTimeInSeconds() <= 0.0f) {
+            CountdownUI.EndCountdown();
             EventManager.StartGame();
+            AudioManager.Instance.PlayGameTheme();
             TimerUI.StartTimer();
-            bTimerStarted = true;
+            bCountdownActive = false;
         }
     }
 
