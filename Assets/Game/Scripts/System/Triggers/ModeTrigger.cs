@@ -12,6 +12,7 @@ public class ModeTrigger : MonoBehaviour {
         if (other.transform.parent == null) return;
 
         if (other.transform.parent.TryGetComponent(out Character PlayerCharacter)) {
+            AudioManager.Instance.Play("SFX_MagicPoof");
             OnModeSwitchTriggered?.Invoke(Destination);
         }
     }

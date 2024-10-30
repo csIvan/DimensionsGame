@@ -5,6 +5,7 @@ public class CheckpointTrigger : MonoBehaviour {
 
     public static event Action<Vector3> OnCheckpointTriggered;
 
+    [SerializeField] private bool playSFX = true;
     private bool bActivated;
 
     
@@ -23,6 +24,9 @@ public class CheckpointTrigger : MonoBehaviour {
 
             bActivated = true;
             OnCheckpointTriggered?.Invoke(transform.position);
+            if (playSFX) {
+                AudioManager.Instance.Play("SFX_Checkpoint");             
+            }
         }
     }
 

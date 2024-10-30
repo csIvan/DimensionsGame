@@ -55,6 +55,8 @@ public class InputManager : MonoBehaviour {
 
     // --------------------------------------------------------------------
     public Vector3 GetMoveDirectionNormalized() {
+        if (bGamePaused) return Vector3.zero;
+
         Vector2 InputVector = InputActions.Player.Move.ReadValue<Vector2>();
         Vector3 MoveDirection = new Vector3(InputVector.x, 0.0f, InputVector.y);
 
@@ -64,6 +66,8 @@ public class InputManager : MonoBehaviour {
 
     // --------------------------------------------------------------------
     public Vector2 GetMouseInput() {
+        if (bGamePaused) return Vector2.zero;
+
         Vector2 MouseDelta = InputActions.Player.Look.ReadValue<Vector2>();
         return MouseDelta;
     }
@@ -71,6 +75,8 @@ public class InputManager : MonoBehaviour {
 
     // --------------------------------------------------------------------
     private void JumpButtonPressed(InputAction.CallbackContext context) {
+        if (bGamePaused) return;
+
         OnJumpStarted?.Invoke();
     }
 
@@ -83,6 +89,8 @@ public class InputManager : MonoBehaviour {
 
     // --------------------------------------------------------------------
     private void InteractButtonPressed(InputAction.CallbackContext context) {
+        if (bGamePaused) return;
+
         OnInteract?.Invoke();
     }
 

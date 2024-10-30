@@ -66,6 +66,7 @@ public class Player2DController : Character {
 
         bMoving = false;
         if (IsEdge(TargetPosition)) {
+            AudioManager.Instance.Play("SFX_8bitDeath");
             HandleOutOfBounds();
         }
     }

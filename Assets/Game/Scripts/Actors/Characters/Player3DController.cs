@@ -140,6 +140,7 @@ public class Player3DController : Character {
 
         if (bGrounded && !bJumping) {
             CharacterAnimator.SetTrigger("Jump");
+            AudioManager.Instance.Play("SFX_Jump");
             bJumping = true;
             CharacterRigidbody.AddForce(jumpForce * transform.up, ForceMode.Impulse);
         }
