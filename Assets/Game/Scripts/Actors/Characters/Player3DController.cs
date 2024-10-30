@@ -38,7 +38,7 @@ public class Player3DController : Character {
     protected override void FixedUpdate() {
         base.FixedUpdate();
 
-        if (Status == CharacterStatus.Alive) {
+        if (Status == CharacterStatus.Alive && !bGamePaused) {
             MoveAndRotate();
         }
     }
