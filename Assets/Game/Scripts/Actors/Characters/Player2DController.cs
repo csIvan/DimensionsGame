@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 
 public class Player2DController : Character {
 
@@ -16,7 +17,7 @@ public class Player2DController : Character {
 
     // --------------------------------------------------------------------
     protected void Update() {
-        if (Status == CharacterStatus.Alive) {
+        if (Status == CharacterStatus.Alive && !bGamePaused) {
             Handle2DMovement();
         }
     }
@@ -67,7 +68,8 @@ public class Player2DController : Character {
         bMoving = false;
         if (IsEdge(TargetPosition)) {
             AudioManager.Instance.Play("SFX_8bitDeath");
-            HandleOutOfBounds();
+            VFXManager.Instance.Play("VFX_Death2D", transform.position, Quaternion.identity);
+            HandleDeath();
         }
     }
 
@@ -82,9 +84,22 @@ public class Player2DController : Character {
         return true;
     }    
     
+
     // --------------------------------------------------------------------
     private bool IsEdge(Vector3 TargetPosition) {
         Collider[] Colliders = Physics.OverlapSphere(TargetPosition, 0.3f, PlatformEdgeLayer);
         return (Colliders.Length >= 1);
     }
+
+
+    // --------------------------------------------------------------------
+    private void OnTriggerEnter(Collider other) {
+        if (other.transform.parent && other.transform.parent.TryGetComponent(out CannonBall2D CannonBall)) {
+            AudioManager.Instance.Play("SFX_8bitDeath");
+            VFXManager.Instance.Play("VFX_Death2D", transform.position, Quaternion.identity);
+            CannonBall.gameObject.SetActive(false);
+            HandleDeath();
+        }
+    }
+
 }

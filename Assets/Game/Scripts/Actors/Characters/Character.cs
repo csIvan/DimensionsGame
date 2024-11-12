@@ -1,6 +1,6 @@
 using System.Collections;
-using UnityEditor.MemoryProfiler;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 
 
 public enum CharacterStatus {
@@ -41,7 +41,7 @@ public class Character : MonoBehaviour {
     public bool bJumping { get; protected set; }
     public bool bOnPlatform { get; protected set; }
 
-
+    protected bool bGamePaused = false;
 
     // --------------------------------------------------------------------
     protected virtual void Awake() {
@@ -57,7 +57,7 @@ public class Character : MonoBehaviour {
         EventManager.OnGameStarted += HandleGameStart;
         EventManager.OnGameEnded += HandleGameOver;
         InputManager.OnPause += HandleGamePause;
-        FallDetectionTrigger.OnFallDetected += HandleOutOfBounds;
+        FallDetectionTrigger.OnFallDetected += HandleDeath;
         CheckpointTrigger.OnCheckpointTriggered += SetCheckpoint;
     }
 
@@ -67,14 +67,14 @@ public class Character : MonoBehaviour {
         EventManager.OnGameStarted -= HandleGameStart;
         EventManager.OnGameEnded -= HandleGameOver;
         InputManager.OnPause -= HandleGamePause;
-        FallDetectionTrigger.OnFallDetected -= HandleOutOfBounds;
+        FallDetectionTrigger.OnFallDetected -= HandleDeath;
         CheckpointTrigger.OnCheckpointTriggered -= SetCheckpoint;
     }
 
 
     // --------------------------------------------------------------------
     protected virtual void FixedUpdate() {
-        if (Status == CharacterStatus.Alive) {
+        if (Status == CharacterStatus.Alive && !bGamePaused) {
             AdjustGravityScale();
             CheckGrounded();
         }
@@ -120,7 +120,8 @@ public class Character : MonoBehaviour {
 
     // --------------------------------------------------------------------
     public virtual void SwitchRigidbodyMode(bool To3DMode) {
-        CharacterRigidbody.rotation = Quaternion.identity; 
+        CharacterRigidbody.rotation = Quaternion.identity;
+        bJumping = false;
         if (To3DMode) {
             CharacterRigidbody.useGravity = true;
             CharacterRigidbody.constraints = RigidbodyConstraints.FreezeRotation;
@@ -144,12 +145,12 @@ public class Character : MonoBehaviour {
     
     // --------------------------------------------------------------------
     protected virtual void HandleGamePause(bool bPause) {
-        Status = (bPause) ? CharacterStatus.Paused : CharacterStatus.Alive;
+        bGamePaused = bPause;
     }
 
 
     // --------------------------------------------------------------------
-    protected virtual void HandleOutOfBounds() {
+    protected virtual void HandleDeath() {
         StartCoroutine(OutOfBoundsTransition());
     }
 

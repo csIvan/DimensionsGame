@@ -6,6 +6,7 @@ public class CheckpointTrigger : MonoBehaviour {
     public static event Action<Vector3> OnCheckpointTriggered;
 
     [SerializeField] private bool playSFX = true;
+    [SerializeField] private bool Is3D = true;
     private bool bActivated;
 
     
@@ -25,7 +26,13 @@ public class CheckpointTrigger : MonoBehaviour {
             bActivated = true;
             OnCheckpointTriggered?.Invoke(transform.position);
             if (playSFX) {
-                AudioManager.Instance.Play("SFX_Checkpoint");             
+                AudioManager.Instance.Play("SFX_Checkpoint");
+                if (Is3D) {
+                    VFXManager.Instance.Play("VFX_Checkpoint3D", transform.position, transform.rotation);
+                }
+                else {
+                    VFXManager.Instance.Play("VFX_Checkpoint2D", transform.position, transform.rotation);
+                }
             }
         }
     }

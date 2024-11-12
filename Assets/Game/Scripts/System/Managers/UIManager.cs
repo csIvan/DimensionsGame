@@ -69,6 +69,7 @@ public class UIManager : MonoBehaviour {
     private void DisplayWinUI() {
         TimerUI.StopTimer();
         FinalTime.text = TimerUI.GetTimeText();
+        TimerUI.gameObject.SetActive(false);
         WinUI.SetActive(true);
         bGameEnded = true;
     }
