@@ -1,5 +1,12 @@
 {
   "dependencies": {
+    "com.starasgames.tmpro-dynamic-data-cleaner": {
+      "version": "https://github.com/STARasGAMES/tmpro-dynamic-data-cleaner.git#upm",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "3a3607621431b0173bea325a53fb34e8d574f995"
+    },
     "com.unity.2d.sprite": {
       "version": "1.0.0",
       "depth": 0,
@@ -42,12 +49,12 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.collections": {
-      "version": "2.4.3",
+      "version": "2.5.1",
       "depth": 2,
       "source": "registry",
       "dependencies": {
-        "com.unity.burst": "1.8.13",
-        "com.unity.test-framework": "1.4.3",
+        "com.unity.burst": "1.8.17",
+        "com.unity.test-framework": "1.4.5",
         "com.unity.nuget.mono-cecil": "1.11.4",
         "com.unity.test-framework.performance": "3.0.3"
       },
@@ -79,7 +86,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.inputsystem": {
-      "version": "1.11.0",
+      "version": "1.11.2",
       "depth": 0,
       "source": "registry",
       "dependencies": {
